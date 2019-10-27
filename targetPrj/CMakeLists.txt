@@ -27,3 +27,8 @@ target_link_libraries(${PROJECT_NAME}.elf hello)
 add_custom_target(${PROJECT_NAME}.bin ALL DEPENDS ${PROJECT_NAME}.elf)
 add_custom_command(TARGET ${PROJECT_NAME}.bin
     COMMAND ${CMAKE_C_OBJCOPY} ARGS -O binary ${PROJECT_NAME}.elf ${PROJECT_NAME}.bin)
+
+add_custom_target(flash DEPENDS ${PROJECT_NAME}.bin)
+add_custom_command(TARGET flash
+    USES_TERMINAL
+    COMMAND JLinkExe -CommanderScript ../flash.jlink)

@@ -1,0 +1,10 @@
+si 0
+device tm4c123gh6pm
+speed 4000
+JTAGConf -1,-1
+r
+h
+loadbin targetPrj.bin, 0
+r
+g
+exit
