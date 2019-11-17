@@ -10,6 +10,7 @@ set(GCC_PATH /tri/ti/css901/ccs/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major
 
 set(CMAKE_C_COMPILER ${GCC_PATH}/arm-none-eabi-gcc CACHE PATH "" FORCE)
 set(CMAKE_C_OBJCOPY ${GCC_PATH}/arm-none-eabi-objcopy CACHE PATH "" FORCE)
+set(CMAKE_C_GDB ${GCC_PATH}/arm-none-eabi-gdb CACHE PATH "" FORCE)
 
 set(SOURCES src/main.c src/tm4c123gh6pm_startup_ccs_gcc.c)
 
@@ -32,3 +33,9 @@ add_custom_target(flash DEPENDS ${PROJECT_NAME}.bin)
 add_custom_command(TARGET flash
     USES_TERMINAL
     COMMAND JLinkExe -CommanderScript ../flash.jlink)
+
+add_custom_target(gdb DEPENDS ${PROJECT_NAME}.elf)
+add_custom_command(TARGET gdb
+    COMMAND xterm -e JLinkGDBServer -if JTAG -device TM4C123GH6PM &
+    COMMAND xterm -e ${CMAKE_C_GDB} ${PROJECT_NAME}.elf -x ../gdbInit &)
+
